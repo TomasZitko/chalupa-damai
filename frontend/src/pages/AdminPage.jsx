@@ -92,11 +92,11 @@ function ReservationsTab() {
               <tr key={r.id} className="hover:bg-dark/[0.02] transition-colors">
                 <td className="px-4 py-3 text-dark">{r.guest_name}</td>
                 <td className="px-4 py-3 text-dark/70 whitespace-nowrap">
-                  {format(parseISO(r.date_from), 'd.M.', { locale: cs })}
+                  {format(parseISO(r.check_in), 'd.M.', { locale: cs })}
                   {' – '}
-                  {format(parseISO(r.date_to), 'd.M.yyyy', { locale: cs })}
+                  {format(parseISO(r.check_out), 'd.M.yyyy', { locale: cs })}
                 </td>
-                <td className="px-4 py-3 text-dark/70">{r.guest_count}</td>
+                <td className="px-4 py-3 text-dark/70">{r.guests_count}</td>
                 <td className="px-4 py-3 text-dark/70">{r.guest_email}</td>
                 <td className="px-4 py-3"><Badge status={r.status} /></td>
                 <td className="px-4 py-3">

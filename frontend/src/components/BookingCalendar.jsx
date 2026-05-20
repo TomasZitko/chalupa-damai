@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { DateRangePicker } from 'react-date-range'
 import { cs } from 'date-fns/locale'
-import { isWithinInterval, parseISO, startOfDay } from 'date-fns'
+import { isWithinInterval, parseISO, startOfDay, subDays } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
 import { getBlockedDates } from '../lib/api'
 import 'react-date-range/dist/styles.css'
@@ -26,7 +26,7 @@ export default function BookingCalendar({ onChange }) {
       return blockedRanges.some(({ date_from, date_to }) =>
         isWithinInterval(d, {
           start: startOfDay(parseISO(date_from)),
-          end:   startOfDay(parseISO(date_to)),
+          end:   subDays(startOfDay(parseISO(date_to)), 1),
         }),
       )
     },

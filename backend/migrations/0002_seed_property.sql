@@ -8,6 +8,6 @@ VALUES (
   'Chalupa Damai',
   'damai',
   'owner@example.com',
-  '$2a$10$REPLACE_THIS_WITH_REAL_BCRYPT_HASH',
+  '$2a$10$ViEqXhMfpO7a.4aapb5d/uZenm3Q95Hf48i6PiJ14R8uSGSNPqYWi',
   1
 );

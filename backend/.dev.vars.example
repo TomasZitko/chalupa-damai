@@ -1,0 +1,3 @@
+# Copy this to .dev.vars (git-ignored) and fill in real values for local dev
+JWT_SECRET=any-random-string-for-local-dev
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
