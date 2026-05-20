@@ -169,14 +169,14 @@ export default function BookingForm() {
     setApiError(null)
     try {
       await submitBooking({
-        property_id: PROPERTY_ID,
-        date_from:   format(dates.startDate, 'yyyy-MM-dd'),
-        date_to:     format(dates.endDate,   'yyyy-MM-dd'),
-        guest_name:  guest.name,
-        guest_email: guest.email,
-        guest_phone: guest.phone,
-        guest_count: Number(guest.guestCount),
-        notes:       guest.notes || undefined,
+        propertySlug: PROPERTY_ID,
+        checkIn:      format(dates.startDate, 'yyyy-MM-dd'),
+        checkOut:     format(dates.endDate,   'yyyy-MM-dd'),
+        guestName:    guest.name,
+        guestEmail:   guest.email,
+        guestPhone:   guest.phone,
+        guestCount:   Number(guest.guestCount),
+        notes:        guest.notes || undefined,
       })
       setSubmitted(true)
     } catch (err) {

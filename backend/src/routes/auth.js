@@ -9,33 +9,31 @@ import { verifyPassword, createToken } from "../lib/auth.js";
 const auth = new Hono();
 
 const loginSchema = z.object({
-  email: z.string().email(),
   password: z.string().min(1),
-  // owner_password_hash must be seeded directly in D1 — no registration endpoint
 });
 
 auth.post("/login", zValidator("json", loginSchema), async (c) => {
-  const { email, password } = c.req.valid("json");
+  const { password } = c.req.valid("json");
   const db = getDb(c.env);
 
+  // Single-property system — find the one active property
   const property = await db
     .select()
     .from(properties)
-    .where(eq(properties.owner_email, email))
+    .where(eq(properties.active, true))
     .get();
 
-  if (!property || !property.active) {
+  if (!property) {
     return c.json({ error: "Invalid credentials" }, 401);
   }
 
-  // owner_password_hash is stored on the property row — seed it via migration
   const valid = await verifyPassword(password, property.owner_password_hash);
   if (!valid) {
     return c.json({ error: "Invalid credentials" }, 401);
   }
 
   const token = await createToken(
-    { sub: email, propertyId: property.id, propertySlug: property.slug },
+    { sub: property.owner_email, propertyId: property.id, propertySlug: property.slug },
     c.env.JWT_SECRET
   );
 

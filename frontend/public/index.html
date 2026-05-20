@@ -2173,6 +2173,17 @@
       <script src="js/lenis.min.js"></script> 
       <script src="js/swiper-bundle.min.js"></script>
       
-      <script src="js/ScrollTrigger.min.js"></script>      <script src="js/CustomEase.min.js"></script>      <script src="js/SplitText.min.js"></script>      <script defer="" src="js/index.js"></script>   
+      <script src="js/ScrollTrigger.min.js"></script>      <script src="js/CustomEase.min.js"></script>      <script src="js/SplitText.min.js"></script>      <script defer="" src="js/index.js"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          document.querySelectorAll('[data-mews-toggle="open"]').forEach(function (el) {
+            el.style.cursor = 'pointer';
+            el.addEventListener('click', function (e) {
+              e.stopPropagation();
+              window.location.href = '/rezervace';
+            });
+          });
+        });
+      </script>
 
    </body></html>

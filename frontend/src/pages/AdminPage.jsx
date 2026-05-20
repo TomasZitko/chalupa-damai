@@ -132,7 +132,7 @@ function ReservationsTab() {
 
 // ── Sync tab ──────────────────────────────────────────────
 
-const EXPORT_URL = `${import.meta.env.VITE_API_URL ?? ''}/api/ical/${import.meta.env.VITE_PROPERTY_ID ?? 'main'}/export.ics`
+const EXPORT_URL = `${import.meta.env.VITE_API_URL ?? ''}/ical/${import.meta.env.VITE_PROPERTY_ID ?? 'main'}.ics`
 
 function SyncTab() {
   const qc = useQueryClient()
@@ -212,10 +212,10 @@ function SyncTab() {
             {feeds.map((f) => (
               <li key={f.id} className="flex items-center justify-between px-4 py-3 gap-4">
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className={`shrink-0 px-2 py-0.5 text-[0.6rem] tracking-wide uppercase rounded-pill ${PLATFORM_COLORS[f.platform] ?? 'bg-gray-100 text-gray-700'}`}>
-                    {f.platform}
+                  <span className={`shrink-0 px-2 py-0.5 text-[0.6rem] tracking-wide uppercase rounded-pill ${PLATFORM_COLORS[f.platform_name] ?? 'bg-gray-100 text-gray-700'}`}>
+                    {f.platform_name}
                   </span>
-                  <span className="text-sm text-dark/60 truncate">{f.url}</span>
+                  <span className="text-sm text-dark/60 truncate">{f.feed_url}</span>
                 </div>
                 {f.last_synced_at && (
                   <span className="shrink-0 text-xs text-dark/30 whitespace-nowrap">

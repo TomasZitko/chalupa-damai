@@ -25,9 +25,12 @@ export default function BookingPage() {
         <div className="absolute inset-0 bg-dark/10 hidden lg:block" />
 
         <div className="relative h-full flex flex-col justify-between p-8 sm:p-10 lg:p-12 xl:p-14">
-          <span className="hidden lg:inline-block text-off-white/50 text-[0.6rem] tracking-[0.35em] uppercase">
-            Rezervace pobytu
-          </span>
+          <a
+            href="/"
+            className="inline-flex items-center gap-2 text-off-white/50 hover:text-off-white text-[0.6rem] tracking-[0.35em] uppercase transition-colors"
+          >
+            ← Zpět na web
+          </a>
 
           <div className="hidden lg:block">
             <h1 className="font-serif text-off-white text-5xl xl:text-6xl leading-none mb-5">
@@ -49,7 +52,10 @@ export default function BookingPage() {
       {/* ── Form panel ─────────────────────────────────── */}
       <main className="flex-1 bg-light">
         {/* mobile-only header */}
-        <div className="lg:hidden px-6 pt-8 pb-6 border-b border-border">
+        <div className="lg:hidden px-6 pt-6 pb-6 border-b border-border">
+          <a href="/" className="inline-flex items-center gap-1.5 text-[0.6rem] tracking-[0.3em] uppercase text-dark/35 hover:text-dark/60 transition-colors mb-4">
+            ← Zpět na web
+          </a>
           <p className="text-[0.6rem] tracking-[0.3em] uppercase text-dark/35 mb-1.5">Rezervace</p>
           <h1 className="font-serif text-3xl text-dark">{PROPERTY_NAME}</h1>
         </div>
