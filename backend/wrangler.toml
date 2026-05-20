@@ -1,0 +1,21 @@
+name = "chalupa-backend"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+FRONTEND_URL = "http://localhost:5173"
+
+# Secrets (never commit plaintext values):
+# Set via CLI:  wrangler secret put RESEND_API_KEY
+#               wrangler secret put JWT_SECRET
+#               wrangler secret put ADMIN_PASSWORD_HASH
+# For local dev: create backend/.dev.vars and add them there (git-ignored)
+
+[[d1_databases]]
+binding = "DB"
+database_name = "chalupa-db"
+database_id = "4b70277d-53fe-4283-82a3-faa9de2cb0fe"
+
+[triggers]
+crons = ["*/20 * * * *"]
