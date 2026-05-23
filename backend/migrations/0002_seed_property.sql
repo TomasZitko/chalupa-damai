@@ -1,13 +1,19 @@
 -- Run this ONCE after 0001_init.sql.
--- Replace the hash below with the output of:
---   node -e "const b=require('bcryptjs'); b.hash('YOUR_PASSWORD',10).then(console.log)"
 --
--- Example property for chalupa "Damai":
+-- Before running, replace the values below:
+--   1. Set owner_email to the real admin email address.
+--   2. Generate a bcrypt hash for your chosen password:
+--        node backend/scripts/hash-password.js
+--      Copy the output hash and paste it in place of the hash below.
+--
+-- Deploy to remote DB:
+--   npm run db:migrate:remote   (from backend/)
+--
 INSERT OR IGNORE INTO properties (name, slug, owner_email, owner_password_hash, active)
 VALUES (
   'Chalupa Damai',
   'damai',
-  'owner@example.com',
-  '$2a$10$ViEqXhMfpO7a.4aapb5d/uZenm3Q95Hf48i6PiJ14R8uSGSNPqYWi',
+  'owner@example.com',           -- REPLACE with actual admin email
+  '$2a$10$REPLACE_THIS_WITH_REAL_BCRYPT_HASH_FROM_hash-password_SCRIPT',
   1
 );

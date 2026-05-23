@@ -8,8 +8,11 @@ import {
   adminLogout,
   getReservations,
   updateReservationStatus,
+  deleteReservation,
   getIcalFeeds,
   addIcalFeed,
+  deleteIcalFeed,
+  syncIcalFeed,
 } from '../lib/api'
 
 // ── Status badge ─────────────────────────────────────────
@@ -69,6 +72,11 @@ function ReservationsTab() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-reservations'] }),
   })
 
+  const { mutate: removeReservation, variables: deleting } = useMutation({
+    mutationFn: (id) => deleteReservation(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-reservations'] }),
+  })
+
   if (isLoading) return <p className="text-sm text-dark/50 py-8 text-center">Načítám rezervace…</p>
   if (isError)   return <p className="text-sm text-primary py-8 text-center">Chyba při načítání.</p>
   if (!reservations.length) return <p className="text-sm text-dark/50 py-8 text-center">Žádné rezervace.</p>
@@ -119,6 +127,15 @@ function ReservationsTab() {
                         Zrušit
                       </button>
                     )}
+                    <button
+                      disabled={deleting === r.id}
+                      onClick={() => {
+                        if (confirm(`Smazat rezervaci ${r.guest_name}?`)) removeReservation(r.id)
+                      }}
+                      className="px-3 py-1.5 text-[0.65rem] tracking-widest uppercase border border-dark/20 text-dark/40 hover:border-primary/40 hover:text-primary transition-colors disabled:opacity-40"
+                    >
+                      Smazat
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -153,6 +170,16 @@ function SyncTab() {
       setFormErr(null)
     },
     onError: (err) => setFormErr(err.message ?? 'Chyba při přidávání.'),
+  })
+
+  const { mutate: removeFeed, variables: removingId } = useMutation({
+    mutationFn: deleteIcalFeed,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['ical-feeds'] }),
+  })
+
+  const { mutate: triggerSync, variables: syncingId } = useMutation({
+    mutationFn: syncIcalFeed,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['ical-feeds'] }),
   })
 
   function handleAdd(e) {
@@ -217,11 +244,29 @@ function SyncTab() {
                   </span>
                   <span className="text-sm text-dark/60 truncate">{f.feed_url}</span>
                 </div>
-                {f.last_synced_at && (
-                  <span className="shrink-0 text-xs text-dark/30 whitespace-nowrap">
-                    {format(parseISO(f.last_synced_at), 'd.M. HH:mm', { locale: cs })}
-                  </span>
-                )}
+                <div className="flex items-center gap-3 shrink-0">
+                  {f.last_synced_at && (
+                    <span className="text-xs text-dark/30 whitespace-nowrap hidden sm:inline">
+                      {format(parseISO(f.last_synced_at), 'd.M. HH:mm', { locale: cs })}
+                    </span>
+                  )}
+                  <button
+                    disabled={syncingId === f.id}
+                    onClick={() => triggerSync(f.id)}
+                    className="px-2.5 py-1 text-[0.6rem] tracking-widest uppercase border border-secondary/40 text-secondary hover:bg-secondary/5 transition-colors disabled:opacity-40"
+                  >
+                    {syncingId === f.id ? '…' : 'Sync'}
+                  </button>
+                  <button
+                    disabled={removingId === f.id}
+                    onClick={() => {
+                      if (confirm(`Odebrat kalendář ${f.platform_name}?`)) removeFeed(f.id)
+                    }}
+                    className="px-2.5 py-1 text-[0.6rem] tracking-widest uppercase border border-primary/30 text-primary/60 hover:bg-primary/5 transition-colors disabled:opacity-40"
+                  >
+                    Odebrat
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
@@ -277,6 +322,12 @@ export default function AdminPage() {
         {/* Page header */}
         <div className="flex items-start justify-between mb-10">
           <div>
+            <a
+              href="/"
+              className="inline-flex items-center gap-1.5 text-[0.6rem] tracking-[0.3em] uppercase text-dark/35 hover:text-dark/60 transition-colors mb-2"
+            >
+              ← Zpět na web
+            </a>
             <p className="text-xs tracking-widest uppercase text-dark/40 mb-1">Administrace</p>
             <h1 className="font-serif text-3xl text-dark">Damai</h1>
           </div>

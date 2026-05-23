@@ -72,7 +72,16 @@ export function adminLogout() {
 }
 
 export function isAuthenticated() {
-  return Boolean(getToken())
+  const token = getToken()
+  if (!token) return false
+  try {
+    // Decode payload without verifying signature — just check expiry client-side
+    const b64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
+    const { exp } = JSON.parse(atob(b64))
+    return typeof exp === 'number' && exp * 1000 > Date.now()
+  } catch {
+    return false
+  }
 }
 
 // ── Admin ─────────────────────────────────────────────────
@@ -97,4 +106,16 @@ export function addIcalFeed({ platform, url }) {
     method: 'POST',
     body: JSON.stringify({ platform_name: platform, feed_url: url }),
   })
+}
+
+export function deleteIcalFeed(id) {
+  return apiClient(`/api/admin/feeds/${id}`, { method: 'DELETE' })
+}
+
+export function syncIcalFeed(id) {
+  return apiClient(`/api/admin/feeds/${id}/sync`, { method: 'POST' })
+}
+
+export function deleteReservation(id) {
+  return apiClient(`/api/admin/reservations/${id}`, { method: 'DELETE' })
 }

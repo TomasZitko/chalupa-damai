@@ -27,6 +27,12 @@ export default function AdminLoginPage() {
     <main className="min-h-dvh bg-light flex items-center justify-center px-4">
       <div className="w-full max-w-sm animate-slide-up">
         <div className="mb-10 text-center">
+          <a
+            href="/"
+            className="inline-flex items-center gap-1.5 text-[0.6rem] tracking-[0.3em] uppercase text-dark/35 hover:text-dark/60 transition-colors mb-4"
+          >
+            ← Zpět na web
+          </a>
           <p className="text-xs tracking-widest uppercase text-dark/40 mb-2">Administrace</p>
           <h1 className="font-serif text-3xl text-dark">Přihlášení</h1>
         </div>
